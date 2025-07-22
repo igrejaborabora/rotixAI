@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+
+// Ensure this route runs in the Node.js runtime (not Edge) so we can use the `mssql` package
+export const runtime = "nodejs";
 import { query } from "@/lib/mssql";
 
 export async function GET() {
