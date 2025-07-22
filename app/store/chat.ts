@@ -378,17 +378,27 @@ export const useChatStore = createPersistStore(
       },
 
       currentSession() {
-        let index = get().currentSessionIndex;
-        const sessions = get().sessions;
+        return get().sessions[get().currentSessionIndex];
+      },
 
-        if (index < 0 || index >= sessions.length) {
-          index = Math.min(sessions.length - 1, Math.max(0, index));
-          set(() => ({ currentSessionIndex: index }));
-        }
+      updateCurrentSession(
+        updater: (session: ChatSession) => void,
+      ) {
+        const sessions = get().sessions.slice();
+        const currentSession = sessions[get().currentSessionIndex];
+        updater(currentSession);
+        set(() => ({ sessions }));
+      },
 
-        const session = sessions[index];
-
-        return session;
+      updateModelConfig(modelName: string) {
+        get().updateCurrentSession((session) => {
+          const config = useAppConfig.getState();
+          const model = config.models.find((m) => m.name === modelName);
+          if (model && model.provider) {
+            session.mask.modelConfig.model = model.name;
+            session.mask.modelConfig.providerName = model.provider.providerName as ServiceProvider;
+          }
+        });
       },
 
       onNewMessage(message: ChatMessage, targetSession: ChatSession) {

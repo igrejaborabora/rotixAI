@@ -584,7 +584,7 @@ export function ChatActions(props: {
       // show next model to default model if exist
       let nextModel = models.find((model) => model.isDefault) || models[0];
       chatStore.updateTargetSession(session, (session) => {
-        session.mask.modelConfig.model = nextModel.name;
+        chatStore.updateModelConfig(nextModel.name);
         session.mask.modelConfig.providerName = nextModel?.provider
           ?.providerName as ServiceProvider;
       });
@@ -695,7 +695,7 @@ export function ChatActions(props: {
               if (s.length === 0) return;
               const [model, providerName] = getModelProvider(s[0]);
               chatStore.updateTargetSession(session, (session) => {
-                session.mask.modelConfig.model = model as ModelType;
+                chatStore.updateModelConfig(model);
                 session.mask.modelConfig.providerName =
                   providerName as ServiceProvider;
                 session.mask.syncGlobalConfig = false;
