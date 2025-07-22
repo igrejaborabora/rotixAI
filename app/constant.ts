@@ -134,6 +134,7 @@ export enum ServiceProvider {
   DeepSeek = "DeepSeek",
   SiliconFlow = "SiliconFlow",
   "302.AI" = "302.AI",
+  MSSQL = "MSSQL",
 }
 
 // Google API safety settings, see https://ai.google.dev/gemini-api/docs/safety-settings
@@ -161,6 +162,7 @@ export enum ModelProvider {
   DeepSeek = "DeepSeek",
   SiliconFlow = "SiliconFlow",
   "302.AI" = "302.AI",
+  MSSQL = "MSSQL",
 }
 
 export const Stability = {
@@ -720,6 +722,10 @@ const ai302Models = [
   "gemini-2.5-pro",
 ];
 
+const mssqlModels = [
+  "mssql-chatbot",
+];
+
 let seq = 1000; // 内置的模型序号生成器从1000开始
 export const DEFAULT_MODELS = [
   ...openaiModels.map((name) => ({
@@ -885,6 +891,17 @@ export const DEFAULT_MODELS = [
       providerName: "302.AI",
       providerType: "ai302",
       sorted: 15,
+    },
+  })),
+  ...mssqlModels.map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "mssql",
+      providerName: "MSSQL",
+      providerType: "mssql",
+      sorted: 16,
     },
   })),
 ] as const;
