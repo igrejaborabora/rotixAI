@@ -585,8 +585,6 @@ export function ChatActions(props: {
       let nextModel = models.find((model) => model.isDefault) || models[0];
       chatStore.updateTargetSession(session, (session) => {
         chatStore.updateModelConfig(nextModel.name);
-        session.mask.modelConfig.providerName = nextModel?.provider
-          ?.providerName as ServiceProvider;
       });
       showToast(
         nextModel?.provider?.providerName == "ByteDance"
