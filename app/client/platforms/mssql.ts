@@ -98,7 +98,7 @@ export class MSSQLApi implements LLMApi {
         
         for (let i = 0; i < chunks.length; i++) {
           currentMessage += (i > 0 ? ' ' : '') + chunks[i];
-          options.onUpdate?.(currentMessage);
+          options.onUpdate?.(currentMessage, currentMessage);
           
           // Add small delay for streaming effect
           await new Promise(resolve => setTimeout(resolve, 50));
@@ -106,11 +106,7 @@ export class MSSQLApi implements LLMApi {
       }
 
       // Final response
-      const responseMessage = {
-        role: "assistant" as const,
-        content: message,
-      };
-      options.onFinish(responseMessage, {
+      options.onFinish(message, {
         ...res,
         json: () => Promise.resolve(resJson),
       } as any);
