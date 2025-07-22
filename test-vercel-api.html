@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Vercel MSSQL API</title>
+</head>
+<body>
+    <h1>🧪 Test RotixAI MSSQL API</h1>
+    <input type="text" id="question" placeholder="Digite sua pergunta (ex: vinho)" value="vinho">
+    <button onclick="testAPI()">Testar API</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAPI() {
+            const question = document.getElementById('question').value;
+            const resultDiv = document.getElementById('result');
+            
+            resultDiv.innerHTML = '⏳ Testando...';
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question })
+                });
+                
+                const data = await response.json();
+                
+                if (data.answer && data.dbRecords !== undefined) {
+                    resultDiv.innerHTML = `
+                        <h3>✅ MSSQL API Funcionando!</h3>
+                        <p><strong>Resposta:</strong> ${data.answer}</p>
+                        <p><strong>Registros DB:</strong> ${data.dbRecords}</p>
+                        <p><strong>Tipo de Busca:</strong> ${data.searchType || 'N/A'}</p>
+                        <p><strong>Preço Médio:</strong> €${data.averagePrice || 'N/A'}</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <h3>⚠️ Resposta Inesperada</h3>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3>❌ Erro</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

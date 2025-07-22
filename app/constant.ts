@@ -893,8 +893,8 @@ export const DEFAULT_MODELS = [
       sorted: 15,
     },
   })),
-  ...mssqlModels.map((name) => ({
-    name,
+  ...mssqlModels.map((model) => ({
+    name: model,
     available: true,
     sorted: seq++,
     provider: {

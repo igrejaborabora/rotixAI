@@ -11,19 +11,8 @@ export class MSSQLApi implements LLMApi {
   private disableListModels = true;
 
   path(path: string): string {
-    let baseUrl = "";
-
-    // Use local API endpoint
-    if (baseUrl.length === 0) {
-      const isApp = !!getClientConfig()?.isApp;
-      baseUrl = isApp ? "http://localhost:3000" : "";
-    }
-
-    if (baseUrl.endsWith("/")) {
-      baseUrl = baseUrl.slice(0, baseUrl.length - 1);
-    }
-
-    return [baseUrl, path].join("");
+    // In a web deployment (like Vercel), a relative path is all we need.
+    return path;
   }
 
   extractMessage(res: any) {
